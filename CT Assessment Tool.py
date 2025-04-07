@@ -7,10 +7,9 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Load BERT model
 @st.cache_resource
 def load_bert_model():
-    return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')  # Correct model name
+    return SentenceTransformer('./local_bert_model')
 
 # Load Questions
 @st.cache_data
