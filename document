@@ -1,0 +1,6 @@
+answers should contain a reason?? [reference from two tier CAP]
+
+1. Preprocessing
+2. Bert Similarity Check [reference from Syntactic Analysis of Code]
+3. HMM Sequence Analysis [refrence from Process Based Assessment] 
+4. Naive Bayes to classify the answers into correct, incorrect or partially correct 
