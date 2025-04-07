@@ -9,7 +9,16 @@ import seaborn as sns
 
 @st.cache_resource
 def load_bert_model():
-    return SentenceTransformer('./local_bert_model')
+    # return SentenceTransformer('./local_bert_model')
+    # return SentenceTransformer('paraphrase-MiniLM-L6-v2')@st.cache_resource
+    import os
+    
+    # Check if local model exists
+    if os.path.exists('./local_bert_model'):
+        return SentenceTransformer('./local_bert_model')
+    else:
+        # Fall back to downloading a model
+        return SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 # Load Questions
 @st.cache_data
@@ -89,7 +98,7 @@ with tab1:
 
     # Load model and questions
     bert_model = load_bert_model()
-    csv_file_path = "computational_thinking_questions.csv"
+    csv_file_path = "./computational_thinking_questions.csv"
     question_bank = load_questions_from_csv(csv_file_path)
     concepts = ['Decomposition', 'Pattern Recognition', 'Abstraction', 'Algorithmic Thinking']
 
@@ -162,7 +171,7 @@ with tab1:
                                 })
 
                                 df = pd.DataFrame([row_data])
-                                file_path = "responses_scored.csv"
+                                file_path = "./responses_scored.csv"
                                 df.to_csv(file_path, mode='a', index=False, header=not os.path.exists(file_path))
 
                                 st.toast("✅ Auto-saved your responses to 'responses_scored.csv'")
