@@ -10,7 +10,7 @@ import seaborn as sns
 # Load BERT model
 @st.cache_resource
 def load_bert_model():
-    return SentenceTransformer('model')
+    return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')  # Correct model name
 
 # Load Questions
 @st.cache_data
