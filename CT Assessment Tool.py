@@ -9,15 +9,30 @@ import seaborn as sns
 
 @st.cache_resource
 def load_bert_model():
-    # return SentenceTransformer('./local_bert_model')
-    # return SentenceTransformer('paraphrase-MiniLM-L6-v2')@st.cache_resource
     try:
-        # This will download the model from Hugging Face Hub
-        return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+        from huggingface_hub import snapshot_download
+        import os
+        
+        # Define the model path
+        model_path = "./downloaded_model"
+        
+        # Download the model if it doesn't exist
+        if not os.path.exists(model_path):
+            with st.spinner("Downloading model (this may take a minute)..."):
+                snapshot_download(
+                    repo_id="sentence-transformers/all-MiniLM-L6-v2", 
+                    repo_type="model",
+                    local_dir=model_path
+                )
+        
+        # Load the model from the downloaded path
+        return SentenceTransformer(model_path)
     except Exception as e:
         st.error(f"Error loading model: {e}")
-        return None
-
+        st.exception(e)
+        # Fallback to direct loading without snapshot
+        return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    
 # Load Questions
 @st.cache_data
 def load_questions_from_csv(file_path):
