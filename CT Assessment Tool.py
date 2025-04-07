@@ -10,29 +10,19 @@ import seaborn as sns
 @st.cache_resource
 def load_bert_model():
     try:
-        from huggingface_hub import snapshot_download
-        import os
-        
-        # Define the model path
-        model_path = "./downloaded_model"
-        
-        # Download the model if it doesn't exist
-        if not os.path.exists(model_path):
-            with st.spinner("Downloading model (this may take a minute)..."):
-                snapshot_download(
-                    repo_id="sentence-transformers/all-MiniLM-L6-v2", 
-                    repo_type="model",
-                    local_dir=model_path
-                )
-        
-        # Load the model from the downloaded path
-        return SentenceTransformer(model_path)
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        st.exception(e)
-        # Fallback to direct loading without snapshot
+        # This is the simpler, more reliable approach
+        # It will download and cache the model automatically
         return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        st.warning("Attempting fallback to another model...")
+        try:
+            # Fallback to an even smaller model if the first one fails
+            return SentenceTransformer('paraphrase-MiniLM-L3-v2')
+        except Exception as e2:
+            st.error(f"Fallback also failed: {str(e2)}")
+            return None
+        
 # Load Questions
 @st.cache_data
 def load_questions_from_csv(file_path):
