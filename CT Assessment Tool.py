@@ -217,7 +217,11 @@ with tab2:
         plt.xlabel('CT Overall Score')
         plt.ylabel('Frequency')
         st.pyplot(fig)
+
+        with st.expander("🔍 See Interpretation"):
+            st.markdown("The distribution of CT (Computational Thinking) Overall Scores reveals that the majority of students performed exceptionally well, with scores clustering between 0.85 and 1.0. The histogram shows a clear left-skewed pattern, indicating that high scores are more frequent while lower scores are relatively rare. This suggests that most students have a strong grasp of computational thinking skills, with only a small portion scoring below 0.7 who may require additional support. Overall, the distribution reflects a generally high level of CT proficiency among the participants.")
         
+
         
         # Boxplot of CT Overall Score by Performance Category
         fig = plt.figure(figsize=(10, 6))
@@ -228,11 +232,19 @@ with tab2:
         plt.xticks(rotation=45)
         st.pyplot(fig)
 
+        with st.expander("🔍 See Interpretation"):
+            st.markdown("The box plot shows the distribution of CT Overall Scores across three performance categories: Excellent, Good, and Fair. Students in the Excellent category have the highest scores, with a median near 0.95 and a narrow interquartile range, indicating consistent high performance. A few outliers are present below 0.85. The Good category shows moderate performance, with scores ranging between approximately 0.62 and 0.78, and a wider spread, suggesting more variability. The Fair category has the lowest scores, with a median around 0.56 and a tighter range between 0.52 and 0.60. This visualization clearly differentiates the performance levels and highlights the scoring trends among the categories.")
+
         # Pairplot of relevant scores
-        fig = plt.figure(figsize=(10, 6))
-        sns.pairplot(subset_df[['Decomposition Score', 'Pattern Recognition Score', 'Abstraction Score', 'Algorithmic Thinking Score', 'CT Overall Score']], diag_kind='kde')
-        plt.suptitle('Pairwise Relationships of CT Sub-Scores', y=1.02)
-        st.pyplot(fig)
+        pairplot_fig = sns.pairplot(
+            subset_df[['Decomposition Score', 'Pattern Recognition Score', 'Abstraction Score', 'Algorithmic Thinking Score', 'CT Overall Score']],
+            diag_kind='kde'
+        )
+        pairplot_fig.fig.suptitle('Pairwise Relationships of CT Sub-Scores', y=1.02)  # Add title to the underlying fig
+        st.pyplot(pairplot_fig.fig)  # Show the correct figure
+
+        with st.expander("🔍 See Interpretation"):
+            st.markdown("The pairplot illustrates the relationships among various CT sub-scores—Decomposition, Pattern Recognition, Abstraction, Algorithmic Thinking—and the CT Overall Score. Diagonal plots show the distribution of individual scores, with most sub-scores concentrated in the higher range (particularly Decomposition and Algorithmic Thinking). Scatter plots in the lower triangle suggest a strong positive correlation between each sub-score and the CT Overall Score, especially for Decomposition and Algorithmic Thinking. However, relationships among the sub-scores themselves are less pronounced, indicating that while they independently contribute to the overall score, they may not strongly predict each other. This suggests that CT skills are somewhat independent dimensions, each playing a distinct role in overall computational thinking ability.")
         
         # Correlation Heatmap
         fig = plt.figure(figsize=(10, 8))
@@ -241,15 +253,9 @@ with tab2:
         plt.title('Correlation Matrix of CT Sub-Scores')
         st.pyplot(fig)
 
-        fig = plt.figure(figsize=(12, 6))
-        sns.barplot(x='Course', y='CT Overall Score', data=subset_df)
-        plt.title('Average CT Overall Score by Course')
-        plt.xlabel('Course')
-        plt.ylabel('Average CT Overall Score')
-        plt.xticks(rotation=45, ha='right')
-        plt.tight_layout() # Prevents labels from overlapping
-        st.pyplot(fig)
-
+        with st.expander("🔍 See Interpretation"):
+            st.markdown("The correlation matrix of CT sub-scores reveals strong positive relationships among the components of computational thinking. Notably, Algorithmic Thinking shows the highest correlation with the CT Overall Score (0.91), indicating it is the most influential contributor. Both Pattern Recognition and Abstraction also exhibit strong correlations with the overall score (0.90 each), while Decomposition shows a moderately strong correlation (0.69). Among the sub-skills, Algorithmic Thinking and Abstraction are most closely related (0.83), followed by Pattern Recognition with both Algorithmic Thinking (0.75) and Abstraction (0.74). In contrast, Decomposition has comparatively weaker associations with the other sub-skills, especially with Abstraction (0.42). These findings suggest that while all sub-skills contribute to the overall CT ability, Algorithmic Thinking, Abstraction, and Pattern Recognition play particularly pivotal roles.")
+        
         # Min-Max normalization
         from sklearn.preprocessing import MinMaxScaler
 
@@ -265,8 +271,6 @@ with tab2:
         ax = average_normalized_scores.plot(kind='bar', figsize=(10, 6), color=colors)
 
         # Add labels and title
-       
-
         plt.title('Average Normalized CT Overall Score by Course')
         plt.xlabel('Course')
         plt.ylabel('Average Normalized CT Overall Score')
@@ -275,6 +279,8 @@ with tab2:
         # Customize the plot (optional)
         plt.tight_layout()
         st.pyplot(fig)
-
+        with st.expander("🔍 See Interpretation"):
+            st.markdown("The bar chart illustrates the average normalized CT (Computational Thinking) overall score across different academic courses. Among the courses, BSc students exhibit the highest average CT score, followed closely by MTech and PGDCA students. This indicates that students in these programs demonstrate stronger computational thinking skills. MCA and BCA students show moderate performance, with very similar average scores, while MSc students have slightly lower scores than these groups. Notably, PhD students have the lowest average CT score, which may suggest a potential misalignment between the assessed computational thinking skills and their academic focus or experience level. Overall, the chart highlights significant variation in CT performance based on academic background.")
+        
     except Exception as e:
         st.error(f"Failed to load or analyze data: {e}")
