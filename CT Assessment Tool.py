@@ -6,14 +6,11 @@ import os
 from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
-from pathlib import Path
 
 # Load BERT model
 @st.cache_resource
 def load_bert_model():
-    model_path = Path(__file__).parent / "bert_model"
-    return SentenceTransformer(str(model_path))
-
+    return SentenceTransformer('model')
 
 # Load Questions
 @st.cache_data
