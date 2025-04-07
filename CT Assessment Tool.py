@@ -11,14 +11,12 @@ import seaborn as sns
 def load_bert_model():
     # return SentenceTransformer('./local_bert_model')
     # return SentenceTransformer('paraphrase-MiniLM-L6-v2')@st.cache_resource
-    import os
-    
-    # Check if local model exists
-    if os.path.exists('./local_bert_model'):
-        return SentenceTransformer('./local_bert_model')
-    else:
-        # Fall back to downloading a model
-        return SentenceTransformer('paraphrase-MiniLM-L6-v2')
+    try:
+        # This will download the model from Hugging Face Hub
+        return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
 
 # Load Questions
 @st.cache_data
